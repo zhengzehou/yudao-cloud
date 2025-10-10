@@ -27,7 +27,7 @@ public class PayWalletRechargeController {
 
     @Resource
     private PayWalletRechargeService walletRechargeService;
-
+// {"merchantOrderId":"17","payOrderId":15}
     @PostMapping("/update-paid")
     @Operation(summary = "更新钱包充值为已充值") // 由 pay-module 支付服务，进行回调，可见 PayNotifyJob
     @PermitAll // 无需登录， 内部校验实现

@@ -54,7 +54,7 @@ public interface MemberSignInRecordConvert {
             day = lastRecord.getDay() + 1;
         }
         // 1.3 判断是否超出了最大签到配置
-        if (day > lastConfig.getDay()) {
+        if (lastConfig == null || day > lastConfig.getDay()) {
             day = 1; // 超过最大配置的天数，重置到第一天。(也就是说开启下一轮签到)
         }
 
