@@ -133,7 +133,7 @@ public class PointActivityController {
             assert minProduct != null;
             activity.setPoint(minProduct.getPoint()).setPrice(minProduct.getPrice());
             findAndThen(spuMap, activity.getSpuId(),
-                    spu -> activity.setSpuName(spu.getName()).setPicUrl(spu.getPicUrl()).setMarketPrice(spu.getMarketPrice()));
+                    spu -> activity.setSpuName(spu.getName()).setPicUrl(spu.getPicUrl()).setPrice(spu.getPrice()).setMarketPrice(spu.getMarketPrice()));
         });
         return result;
     }

@@ -127,9 +127,9 @@ CREATE TABLE IF NOT EXISTS promotion_seckill_activity
     end_time           varchar(32)  NOT NULL,
     sort               int      NOT NULL,
     config_ids         varchar(256)  NOT NULL,
-    order_count        int      NOT NULL,
-    user_count         int      NOT NULL,
-    total_price        int      NOT NULL,
+    order_count        int      NOT NULL  default 0,
+    user_count         int      NOT NULL default 0,
+    total_price        int      NULL,
     total_limit_count  int,
     single_limit_count int,
     stock              int,
@@ -159,6 +159,28 @@ CREATE TABLE IF NOT EXISTS promotion_seckill_config
     tenant_id   bigint   NOT NULL,
     PRIMARY KEY (id)
 ) COMMENT '秒杀时段配置';
+
+
+CREATE TABLE IF NOT EXISTS `promotion_seckill_product` (
+     `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+     `activity_id` bigint NOT NULL COMMENT '秒杀活动 id',
+     `config_ids` varchar(512) NOT NULL COMMENT '秒杀时段 id',
+     `spu_id` bigint NOT NULL COMMENT '商品 SPU 编号',
+     `sku_id` bigint NOT NULL COMMENT '商品 SKU 编号',
+     `seckill_price` int NOT NULL COMMENT '秒杀金额，单位：分',
+     `stock` int NULL DEFAULT 0 COMMENT '秒杀库存',
+     `activity_status` int NOT NULL DEFAULT 0 COMMENT '秒杀商品状态',
+     `activity_start_time` datetime NOT NULL COMMENT '活动开始时间点',
+     `activity_end_time` datetime NOT NULL COMMENT '活动结束时间点',
+
+     `creator` varchar(64) DEFAULT '' COMMENT '创建者',
+     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `updater` varchar(64) DEFAULT '' COMMENT '更新者',
+     `update_time` datetime NULL  COMMENT '更新时间',
+     `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+     `tenant_id` bigint NOT NULL DEFAULT '0',
+     PRIMARY KEY (`id`)
+) COMMENT='秒杀参与商品';
 
 CREATE TABLE IF NOT EXISTS promotion_combination_activity
 (
@@ -347,3 +369,23 @@ CREATE TABLE `promotion_discount_product` (
       `tenant_id` bigint NOT NULL DEFAULT '0',
       PRIMARY KEY (`id`)
 ) COMMENT='限时折扣商品';
+
+CREATE TABLE `promotion_point_product` (
+       `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+       `activity_id` bigint NOT NULL COMMENT '积分商城活动 id',
+       `spu_id` bigint NOT NULL COMMENT '商品 SPU 编号',
+       `sku_id` bigint NOT NULL COMMENT '商品 SKU 编号',
+       `count` int NOT NULL COMMENT '可兑换次数',
+       `point` int NULL DEFAULT 0 COMMENT '所需兑换积分',
+       `price` int NULL DEFAULT 0 COMMENT '所需兑换金额，单位：分',
+       `stock` int NULL DEFAULT 0 COMMENT '积分商城商品库存',
+       `activity_status` int NOT NULL DEFAULT 0 COMMENT '积分商城商品状态',
+
+       `creator` varchar(64) DEFAULT '' COMMENT '创建者',
+       `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+       `updater` varchar(64) DEFAULT '' COMMENT '更新者',
+       `update_time` datetime NULL  COMMENT '更新时间',
+       `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+       `tenant_id` bigint NOT NULL DEFAULT '0',
+       PRIMARY KEY (`id`)
+) COMMENT='积分商城商品';
