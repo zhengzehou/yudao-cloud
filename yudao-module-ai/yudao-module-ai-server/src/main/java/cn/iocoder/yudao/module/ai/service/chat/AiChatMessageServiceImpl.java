@@ -501,7 +501,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
                                               List<String> attachmentUrls,
                                               AiWebSearchResponse webSearchResponse) {
         AiChatMessageDO message = new AiChatMessageDO().setConversationId(conversationId).setReplyId(replyId)
-                .setModel(model.getModel()).setModelId(model.getId()).setUserId(userId).setRoleId(roleId).set
+                .setModel(model.getModel()).setModelId(model.getId()).setUserId(userId).setRoleId(roleId)
                 .setType(messageType.getValue()).setContent(content).setUseContext(useContext)
                 .setSegmentIds(convertList(knowledgeSegments, AiKnowledgeSegmentSearchRespBO::getId))
                 .setAttachmentUrls(attachmentUrls);
