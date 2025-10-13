@@ -195,7 +195,10 @@ public class TradeOrderUpdateServiceImpl implements TradeOrderUpdateService {
 
         // 3. 保存订单
         tradeOrderMapper.insert(order);
-        orderItems.forEach(orderItem -> orderItem.setOrderId(order.getId()));
+        orderItems.forEach(orderItem -> {
+            orderItem.setOrderId(order.getId());
+            orderItem.setPicUrl(orderItem.getPicUrl().split("\\|\\*\\|")[0]);
+        });
         tradeOrderItemMapper.insertBatch(orderItems);
 
         // 4. 订单创建后的逻辑

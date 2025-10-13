@@ -17,6 +17,7 @@ import cn.iocoder.yudao.module.promotion.dal.dataobject.point.PointProductDO;
 import cn.iocoder.yudao.module.promotion.dal.mysql.point.PointActivityMapper;
 import cn.iocoder.yudao.module.promotion.dal.mysql.point.PointProductMapper;
 import jakarta.annotation.Resource;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -273,11 +274,13 @@ public class PointActivityServiceImpl implements PointActivityService {
         return pointActivityMapper.selectPage(pageReqVO);
     }
 
+    @Cacheable(cacheNames = "PointActivityListByIds#5m", key = "#ids")
     @Override
     public List<PointActivityDO> getPointActivityListByIds(Collection<Long> ids) {
         return pointActivityMapper.selectList(PointActivityDO::getId, ids);
     }
 
+    @Cacheable(cacheNames = "PointProductListByActivityIds#5m", key = "#activityIds")
     @Override
     public List<PointProductDO> getPointProductListByActivityIds(Collection<Long> activityIds) {
         return pointProductMapper.selectListByActivityId(activityIds);

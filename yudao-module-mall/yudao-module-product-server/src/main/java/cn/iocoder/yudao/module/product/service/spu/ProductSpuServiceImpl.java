@@ -21,6 +21,8 @@ import cn.iocoder.yudao.module.product.service.category.ProductCategoryService;
 import cn.iocoder.yudao.module.product.service.sku.ProductSkuService;
 import com.google.common.collect.Maps;
 import jakarta.annotation.Resource;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,6 +159,7 @@ public class ProductSpuServiceImpl implements ProductSpuService {
         productSpuMapper.updateBrowseCount(id , incrCount);
     }
 
+    @CacheEvict(value = "spu", key = "#id")
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteSpu(Long id) {
@@ -184,12 +187,14 @@ public class ProductSpuServiceImpl implements ProductSpuService {
         return spuDO;
     }
 
+    @Cacheable(cacheNames = "spu#5m", key = "#id")
     @Override
     public ProductSpuDO getSpu(Long id) {
         return productSpuMapper.selectById(id);
     }
 
     @Override
+    @Cacheable(cacheNames = "spu#5m", key = "#id", unless = "#result == null")
     public ProductSpuDO getSpu(Long id, boolean includeDeleted) {
         if (includeDeleted) {
             return productSpuMapper.selectByIdIncludeDeleted(id);

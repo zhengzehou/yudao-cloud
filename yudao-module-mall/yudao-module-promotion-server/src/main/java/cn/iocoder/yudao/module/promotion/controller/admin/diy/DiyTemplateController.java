@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,8 @@ public class DiyTemplateController {
     private DiyTemplateService diyTemplateService;
     @Resource
     private DiyPageService diyPageService;
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     @PostMapping("/create")
     @Operation(summary = "创建装修模板")
@@ -44,6 +47,7 @@ public class DiyTemplateController {
     @PreAuthorize("@ss.hasPermission('promotion:diy-template:update')")
     public CommonResult<Boolean> updateDiyTemplate(@Valid @RequestBody DiyTemplateUpdateReqVO updateReqVO) {
         diyTemplateService.updateDiyTemplate(updateReqVO);
+        stringRedisTemplate.delete("diy-template-used_"+updateReqVO.getId());
         return success(true);
     }
 
@@ -52,6 +56,9 @@ public class DiyTemplateController {
     @PreAuthorize("@ss.hasPermission('promotion:diy-template:use')")
     public CommonResult<Boolean> useDiyTemplate(@RequestParam("id") Long id) {
         diyTemplateService.useDiyTemplate(id);
+        // 删除 默认模板缓存
+        stringRedisTemplate.delete("diy-template-used");
+        stringRedisTemplate.delete("diy-template-used_"+id);
         return success(true);
     }
 
@@ -61,6 +68,7 @@ public class DiyTemplateController {
     @PreAuthorize("@ss.hasPermission('promotion:diy-template:delete')")
     public CommonResult<Boolean> deleteDiyTemplate(@RequestParam("id") Long id) {
         diyTemplateService.deleteDiyTemplate(id);
+        stringRedisTemplate.delete("diy-template-used_"+id);
         return success(true);
     }
 
@@ -98,6 +106,9 @@ public class DiyTemplateController {
     @PreAuthorize("@ss.hasPermission('promotion:diy-template:update')")
     public CommonResult<Boolean> updateDiyTemplateProperty(@Valid @RequestBody DiyTemplatePropertyUpdateRequestVO updateReqVO) {
         diyTemplateService.updateDiyTemplateProperty(updateReqVO);
+        // 删除 默认模板缓存
+        stringRedisTemplate.delete("diy-template-used");
+        stringRedisTemplate.delete("diy-template-used_"+updateReqVO.getId());
         return success(true);
     }
 
