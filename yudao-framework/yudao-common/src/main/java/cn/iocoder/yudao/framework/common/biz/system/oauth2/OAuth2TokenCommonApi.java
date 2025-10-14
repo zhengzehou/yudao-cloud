@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-@FeignClient(name = RpcConstants.SYSTEM_NAME) // TODO 芋艿：fallbackFactory =
+@FeignClient(name = RpcConstants.SYSTEM_NAME,path = RpcConstants.SYSTEM_PATH) // TODO 芋艿：fallbackFactory =
 @Tag(name = "RPC 服务 - OAuth2.0 令牌")
 public interface OAuth2TokenCommonApi {
 
@@ -24,7 +24,7 @@ public interface OAuth2TokenCommonApi {
      * 校验 Token 的 URL 地址，主要是提供给 Gateway 使用
      */
     @SuppressWarnings("HttpUrlsUsage")
-    String URL_CHECK = "http://" + RpcConstants.SYSTEM_NAME + PREFIX + "/check";
+    String URL_CHECK = "http://" + RpcConstants.SYSTEM_NAME+ "/"+ RpcConstants.SYSTEM_NAME + PREFIX + "/check";
 
     @PostMapping(PREFIX + "/create")
     @Operation(summary = "创建访问令牌")

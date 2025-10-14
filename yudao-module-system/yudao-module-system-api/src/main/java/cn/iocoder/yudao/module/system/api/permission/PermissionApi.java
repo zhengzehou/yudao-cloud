@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collection;
 import java.util.Set;
 
-@FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
+@FeignClient(name = ApiConstants.NAME,path = ApiConstants.PATH) // TODO 芋艿：fallbackFactory =
 @Tag(name = "RPC 服务 - 权限")
 public interface PermissionApi extends PermissionCommonApi {
 

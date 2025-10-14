@@ -37,6 +37,8 @@ spring:
 
 server:
   port: 48081
+  servlet:
+    context-path: /system-server
 
 logging:
   file:

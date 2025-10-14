@@ -37,6 +37,8 @@ spring:
 
 server:
   port: 48102
+  servlet:
+    context-path: /trade-server
 
 logging:
   file:

@@ -37,6 +37,8 @@ spring:
 
 server:
   port: 48085
+  servlet:
+    context-path: /pay-server
 
 logging:
   file:

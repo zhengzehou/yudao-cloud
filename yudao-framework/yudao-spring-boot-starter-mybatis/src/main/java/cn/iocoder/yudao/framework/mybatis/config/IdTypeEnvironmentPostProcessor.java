@@ -56,11 +56,13 @@ public class IdTypeEnvironmentPostProcessor implements EnvironmentPostProcessor 
     }
 
     public IdType getIdType(ConfigurableEnvironment environment) {
-        return environment.getProperty(ID_TYPE_KEY, IdType.class);
+        String idType = environment.getProperty(ID_TYPE_KEY);
+        log.info("[getIdType][idType 为({})]", idType);
+        return IdType.valueOf(idType);
     }
 
     public void setIdType(ConfigurableEnvironment environment, IdType idType) {
-        environment.getSystemProperties().put(ID_TYPE_KEY, idType);
+        environment.getSystemProperties().put(ID_TYPE_KEY, IdType.valueOf(idType.name()));
         log.info("[setIdType][修改 MyBatis Plus 的 idType 为({})]", idType);
     }
 

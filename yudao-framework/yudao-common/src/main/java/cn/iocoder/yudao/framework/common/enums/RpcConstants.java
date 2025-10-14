@@ -20,6 +20,7 @@ public interface RpcConstants {
      * 注意，需要保证和 spring.application.name 保持一致
      */
     String SYSTEM_NAME = "system-server";
+    String SYSTEM_PATH = "/system-server";
 
     /**
      * system 服务的前缀
@@ -32,6 +33,7 @@ public interface RpcConstants {
      * 注意，需要保证和 spring.application.name 保持一致
      */
     String INFRA_NAME = "infra-server";
+    String INFRA_PATH = "/infra-server";
     /**
      * infra 服务的前缀
      */

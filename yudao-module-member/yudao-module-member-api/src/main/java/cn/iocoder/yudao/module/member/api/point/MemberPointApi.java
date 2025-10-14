@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.constraints.Min;
 
-@FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
+@FeignClient(name = ApiConstants.NAME,path = ApiConstants.PATH) // TODO 芋艿：fallbackFactory =
 @Tag(name = "RPC 服务 - 用户积分")
 public interface MemberPointApi {
 

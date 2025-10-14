@@ -37,6 +37,8 @@ spring:
 
 server:
   port: 48082
+  servlet:
+    context-path: /infra-server
 
 logging:
   file:

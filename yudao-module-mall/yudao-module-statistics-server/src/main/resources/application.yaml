@@ -37,6 +37,8 @@ spring:
 
 server:
   port: 48103
+  servlet:
+    context-path: /statistics-server
 
 logging:
   file:

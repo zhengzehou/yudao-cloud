@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
+@FeignClient(name = ApiConstants.NAME,path = ApiConstants.PATH) // TODO 芋艿：fallbackFactory =
 @Tag(name = "RPC 服务 - 操作日志")
 public interface OperateLogApi extends OperateLogCommonApi {
 
