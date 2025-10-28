@@ -48,7 +48,10 @@ CREATE TABLE `infra_api_access_log`  (
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_trace_id`(`trace_id`) USING BTREE,
+  INDEX `idx_user_ip`(`user_ip`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 36233 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = 'API 访问日志表';
 
 -- ----------------------------
@@ -90,7 +93,11 @@ CREATE TABLE `infra_api_error_log`  (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_trace_id`(`trace_id`) USING BTREE,
+  INDEX `idx_user_ip`(`user_ip`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 22656 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统异常日志';
 
 -- ----------------------------
@@ -408,7 +415,10 @@ CREATE TABLE `system_dept`  (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_name`(`name`) USING BTREE,
+  INDEX `idx_phone`(`phone`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '部门表';
 
 -- ----------------------------
@@ -450,7 +460,8 @@ CREATE TABLE `system_dict_data`  (
   `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_dict_type`(`dict_type`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3031 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '字典数据表';
 
 -- ----------------------------
@@ -1102,7 +1113,9 @@ CREATE TABLE `system_dict_type`  (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `deleted_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2008 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '字典类型表';
 
 -- ----------------------------
@@ -1242,7 +1255,12 @@ CREATE TABLE `system_login_log`  (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_trace_id`(`trace_id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_user_ip`(`user_ip`) USING BTREE,
+  INDEX `idx_username`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4021 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录';
 
 -- ----------------------------
@@ -1269,7 +1287,10 @@ CREATE TABLE `system_mail_account`  (
   `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_mail`(`mail`) USING BTREE,
+  INDEX `idx_username`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '邮箱账号表';
 
 -- ----------------------------
@@ -2589,7 +2610,10 @@ CREATE TABLE `system_operate_log`  (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_user_ip`(`user_ip`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9134 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录 V2 版本';
 
 -- ----------------------------
@@ -3733,7 +3757,12 @@ CREATE TABLE `system_users`  (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  INDEX `idx_username`(`username`) USING BTREE,
+  INDEX `idx_nickname`(`nickname`) USING BTREE,
+  INDEX `idx_email`(`email`) USING BTREE,
+  INDEX `idx_phone`(`phone`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 143 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表';
 
 -- ----------------------------

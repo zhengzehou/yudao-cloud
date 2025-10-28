@@ -19,7 +19,10 @@ CREATE TABLE IF NOT EXISTS `product_sku` (
     update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted bit NOT NULL DEFAULT FALSE,
     tenant_id bigint not null default  '0',
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+    INDEX `idx_spu_id`(`spu_id`) USING BTREE,
+    INDEX `idx_bar_code`(`bar_code`) USING BTREE
 ) COMMENT '商品sku';
 
 CREATE TABLE IF NOT EXISTS `product_spu` (
@@ -61,7 +64,9 @@ CREATE TABLE IF NOT EXISTS `product_spu` (
     update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted bit NOT NULL DEFAULT FALSE,
     tenant_id bigint not null default  '0',
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+    INDEX `idx_name`(`name`) USING BTREE
 ) COMMENT '商品spu';
 
 CREATE TABLE IF NOT EXISTS `product_category` (

@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class PageParam implements Serializable {
 
     private static final Integer PAGE_NO = 1;
-    private static final Integer PAGE_SIZE = 10;
+    private static final Integer PAGE_SIZE = 20;
 
     /**
      * 每页条数 - 不分页
@@ -32,5 +32,7 @@ public class PageParam implements Serializable {
     @Min(value = 1, message = "每页条数最小值为 1")
     @Max(value = 100, message = "每页条数最大值为 100")
     private Integer pageSize = PAGE_SIZE;
+
+    private Integer offset = (pageNo - 1) * pageSize;
 
 }
