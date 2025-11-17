@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.im.dal.dataobject.userfriends;
 
+import cn.idev.excel.annotation.ExcelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.util.*;
 import java.time.LocalDateTime;
@@ -47,6 +49,11 @@ public class UserFriendsDO extends BaseDO {
      * 当前状态（0通过、1待通过、2拒绝、4删除、7拉黑、3临时禁用）
      */
     private Integer status;
+
+    /**
+     * 添加时的备注
+     */
+    private String memo;
 
 
 }

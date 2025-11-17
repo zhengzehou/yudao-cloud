@@ -5,12 +5,12 @@ import java.util.*;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
-import cn.iocoder.yudao.module.im.controller.admin.userfriends.vo.UserFriendsPageReqVO;
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.UserVO;
-import cn.iocoder.yudao.module.im.dal.dataobject.userfriends.UserFriendsDO;
 import cn.iocoder.yudao.module.im.dal.dataobject.userinfo.UserInfoDO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.*;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -29,10 +29,10 @@ public interface UserInfoMapper extends BaseMapperX<UserInfoDO> {
                 .likeIfPresent(UserInfoDO::getNickName, reqVO.getNickName())
                 .eqIfPresent(UserInfoDO::getFirstChar, reqVO.getFirstChar())
                 .eqIfPresent(UserInfoDO::getAvatar, reqVO.getAvatar())
-                .eqIfPresent(UserInfoDO::getSex, reqVO.getSex())
+                .eqIfPresent(UserInfoDO::getGender, reqVO.getSex())
                 .eqIfPresent(UserInfoDO::getAge, reqVO.getAge())
                 .eqIfPresent(UserInfoDO::getBirthday, reqVO.getBirthday())
-                .eqIfPresent(UserInfoDO::getSign, reqVO.getSign())
+                .eqIfPresent(UserInfoDO::getSlogan, reqVO.getSign())
                 .eqIfPresent(UserInfoDO::getPhone, reqVO.getPhone())
                 .eqIfPresent(UserInfoDO::getEmail, reqVO.getEmail())
                 .eqIfPresent(UserInfoDO::getArea, reqVO.getArea())
@@ -43,8 +43,8 @@ public interface UserInfoMapper extends BaseMapperX<UserInfoDO> {
                 .orderByDesc(UserInfoDO::getId));
     }
 
-    @Select("SELECT u.ID userId,u.AVATAR,u.NICK_NAME,u.STATUS type, u.DELETED activeStatus FROM IM_USER_INFO u inner join IM_USER_FRIENDS f  on u.ID = f.USER_ID where f.DELETED  = 0 and f.USER_ID = #{id} limit #{offset},#{pageSize}")
-    PageResult<UserVO> selectFriendsPage(UserInfoPageReqVO reqVO);
+    @Select("SELECT u.ID userId,u.AVATAR,u.NICK_NAME,u.STATUS type, u.DELETED activeStatus FROM IM_USER_INFO u inner join IM_USER_FRIENDS f  on u.ID = f.USER_ID where f.DELETED  = 0 and f.USER_ID = #{userId}")
+    IPage<UserVO> selectFriendsPage(IPage<UserVO> page, @Param("userId") Long userId);
 
     default UserInfoDO selectByMobile(String mobile) {
         return selectOne(UserInfoDO::getPhone, mobile);

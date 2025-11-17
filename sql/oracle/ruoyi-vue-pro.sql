@@ -2901,6 +2901,7 @@ CREATE TABLE system_oauth2_client
     status                         smallint                                 NOT NULL,
     access_token_validity_seconds  number                                   NOT NULL,
     refresh_token_validity_seconds number                                   NOT NULL,
+    app_token_expire_days number                                   NOT NULL default 3,
     redirect_uris                  varchar2(255)                            NULL,
     authorized_grant_types         varchar2(255)                            NULL,
     scopes                         varchar2(255)  DEFAULT NULL              NULL,

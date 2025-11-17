@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.framework.common.biz.system.oauth2.dto;
 
+import cn.iocoder.yudao.framework.common.enums.TerminalEnum;
 import cn.iocoder.yudao.framework.common.enums.UserTypeEnum;
 import cn.iocoder.yudao.framework.common.validation.InEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,5 +29,9 @@ public class OAuth2AccessTokenCreateReqDTO implements Serializable {
 
     @Schema(description = "授权范围的数组", example = "user_info")
     private List<String> scopes;
+
+    @Schema(description = "登录终端，主要标记是不是app，app登录根据业务允许单独设置登录有效期", example = "app")
+    @InEnum(value = TerminalEnum.class, message = "登录终端必须是 {value}")
+    private Integer term;
 
 }

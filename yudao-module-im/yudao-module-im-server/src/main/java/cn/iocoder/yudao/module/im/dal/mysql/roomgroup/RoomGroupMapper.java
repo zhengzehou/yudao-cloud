@@ -8,6 +8,7 @@ import cn.iocoder.yudao.module.im.controller.app.chat.vo.RoomGroupVO;
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.RoomReadInfo;
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.RoomUnreadCount;
 import cn.iocoder.yudao.module.im.dal.dataobject.roomgroup.RoomGroupDO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import cn.iocoder.yudao.module.im.controller.admin.roomgroup.vo.*;
 import org.apache.ibatis.annotations.Param;
@@ -49,20 +50,19 @@ public interface RoomGroupMapper extends BaseMapperX<RoomGroupDO> {
 
     /**
      * 获取最近联系人
-     * @param reqVO
      * @return
      */
 
 //    @Select("SELECT g.* FROM im_session_group g inner join im_session_msg m on g.id = m.session_id WHERE m.send_user_id = #{createUserId} ORDER BY g.lasted_msg_time DESC LIMIT #{offset} , #{pageSize}")
     @Select("SELECT ru.ROOM_ID,ru.ROOM_GROUP ,g.LASTED_MSG text,g.LASTED_MSG_ID,u.AVATAR,u.STATUS type,u.NICK_NAME name,ru.READ_MSG_ID lastMsgId, g.LASTED_MSG_TIME activeTime ,ru.STICK_TIME as pinTime, 0 noticeStatus, 0 shieldStatus,0 hotFlag,0 unreadCount\n" +
-            "FROM  (SELECT * FROM IM_ROOM_USER WHERE USER_ID =  #{createUserId}) ru INNER JOIN (SELECT * FROM IM_USER_INFO WHERE ID =  #{createUserId}) u on ru.USER_ID = u.ID INNER JOIN IM_ROOM_GROUP g  on g.id = ru.ROOM_ID\n" +
-            "WHERE u.ID = #{createUserId} ORDER BY g.lasted_msg_time DESC LIMIT #{offset} , #{pageSize}")
-    PageResult<ContactVO> selectContactPage(RoomGroupPageReqVO reqVO) ;
+            "FROM  (SELECT * FROM IM_ROOM_USER WHERE USER_ID =  #{userId}) ru INNER JOIN (SELECT * FROM IM_USER_INFO WHERE ID =  #{userId}) u on ru.USER_ID = u.ID INNER JOIN IM_ROOM_GROUP g  on g.id = ru.ROOM_ID\n" +
+            "WHERE u.ID = #{userId} ORDER BY g.lasted_msg_time DESC ")
+    IPage<ContactVO> selectContactPage(IPage<ContactVO> page, @Param("userId") Long userId) ;
 
-    @Select("ru.ROOM_ID,ru.ROOM_GROUP name,u.AVATAR,u.deleted deleteStatus,3 role, g.CREATE_TIME ,g.UPDATE_TIME ,ru.CREATE_TIME joinTime,ru.UPDATE_TIME memberUpdateTime " +
+    @Select("SELECT ru.ROOM_ID,ru.ROOM_GROUP name,u.AVATAR,u.deleted deleteStatus,3 role, g.CREATE_TIME ,g.UPDATE_TIME ,ru.CREATE_TIME joinTime,ru.UPDATE_TIME memberUpdateTime " +
             "FROM  (SELECT * FROM IM_ROOM_USER WHERE USER_ID =  #{createUserId}) ru INNER JOIN (SELECT * FROM IM_USER_INFO WHERE ID =  #{createUserId}) u on ru.USER_ID = u.ID INNER JOIN IM_ROOM_GROUP g  on g.id = ru.ROOM_ID\n" +
-            "WHERE u.ID = #{createUserId} ORDER BY g.lasted_msg_time DESC LIMIT #{offset} , #{pageSize}")
-    PageResult<RoomGroupVO> selectContactGroupPage(RoomGroupPageReqVO reqVO) ;
+            "WHERE u.ID = #{createUserId} ORDER BY g.lasted_msg_time")
+    IPage<RoomGroupVO> selectContactGroupPage(IPage<RoomGroupVO> page, @Param("createUserId") Long createUserId) ;
 
     @Select("SELECT count(1) FROM IM_ROOM_MSG m WHERE m.ROOM_ID = #{roomId} and ID > #{readMsgId}")
     int selectUnreadMsgCount(Long roomId, Long readMsgId) ;

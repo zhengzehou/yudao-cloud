@@ -22,11 +22,11 @@ import jakarta.validation.constraints.NotEmpty;
 @Builder
 public class AppAuthLoginReqVO {
 
-    @Schema(description = "手机号", example = "15601691300")
+    @Schema(description = "手机号", example = "15608866900")
     @Mobile
     private String mobile;
 
-    @Schema(description = "手机号", example = "15601691300")
+    @Schema(description = "邮箱", example = "abcedes@qq.com")
     @Email
     private String email;
 
@@ -47,7 +47,7 @@ public class AppAuthLoginReqVO {
     @Schema(description = "授权码", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private String socialCode;
 
-    @Schema(description = "state", requiredMode = Schema.RequiredMode.REQUIRED, example = "9b2ffbc1-7425-4155-9894-9d5c08541d62")
+    @Schema(description = "state", requiredMode = Schema.RequiredMode.REQUIRED, example = "9b3ffbc1-8425-4155-9794-9d5w48541d62")
     private String socialState;
 
     @AssertTrue(message = "授权码不能为空")

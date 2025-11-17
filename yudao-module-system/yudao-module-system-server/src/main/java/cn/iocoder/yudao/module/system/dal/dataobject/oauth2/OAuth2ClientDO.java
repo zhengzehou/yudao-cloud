@@ -105,5 +105,9 @@ public class OAuth2ClientDO extends BaseDO {
      * 附加信息，JSON 格式
      */
     private String additionalInformation;
+    /**
+     * APP访问令牌的有效期
+     */
+    private Integer appTokenExpireDays;
 
 }

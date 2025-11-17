@@ -56,4 +56,21 @@ public class OAuth2AccessTokenRedisDAO {
         return String.format(OAUTH2_ACCESS_TOKEN, accessToken);
     }
 
+    public void hSet(String key,String hKey,Object value,Long time) {
+        stringRedisTemplate.opsForHash().put(key, hKey, value);
+        if(time != null && time > 0 ){
+            long ttl = stringRedisTemplate.getExpire(key);
+            if(ttl < time) {
+                stringRedisTemplate.expire(key, time, TimeUnit.SECONDS);
+            }
+        }
+    }
+    public Object mHGet(String key,String hKey) {
+        return stringRedisTemplate.opsForHash().get(key, hKey);
+    }
+
+    public List<Object> hGetAll(String key) {
+        return stringRedisTemplate.opsForHash().values(key);
+    }
+
 }

@@ -17,6 +17,11 @@ public final class PageResult<T> implements Serializable {
     @Schema(description = "数据", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<T> list;
 
+    private Boolean isLast;
+
+    Integer current;
+    Integer pageSize;
+
     public PageResult() {
     }
 

@@ -55,6 +55,8 @@ public interface UserInfoService {
      */
     UserInfoDO getUserInfo(Long id);
 
+    List<UserInfoDO> getUserInfo(List<Long> ids);
+
     UserInfoDO getUserByMobile(String mobile);
     UserInfoDO getUserByEmail(String email);
     UserInfoDO getUserByUsername(String name);

@@ -16,6 +16,7 @@ import cn.iocoder.yudao.module.im.dal.dataobject.roomgroup.RoomGroupDO;
 import cn.iocoder.yudao.module.im.dal.dataobject.userinfo.UserInfoDO;
 import cn.iocoder.yudao.module.im.service.roomgroup.RoomGroupService;
 import cn.iocoder.yudao.module.im.service.userinfo.UserInfoService;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -87,6 +88,18 @@ public class ChatController {
         }
         chatRespVO.setList(pageResult.getList());
         return success(chatRespVO);
+    }
+    @RequestMapping("/user/friend/apply/unread")
+    @Operation(summary = "获取未读消息数")
+    public CommonResult<JSONObject> getUserFriendsUnread(@Valid ChatPageReqVO reqVO) {
+
+        UserInfoPageReqVO pageReqVO = new UserInfoPageReqVO();
+        pageReqVO.setPageSize(reqVO.getPageSize());
+        Long userId = SecurityFrameworkUtils.getLoginUserId();
+        pageReqVO.setId(userId);
+        JSONObject json = new JSONObject();
+        json.put("unReadCount",0);
+        return success(json);
     }
     @RequestMapping("/room/group/page")
     @Operation(summary = "获取群组列表")

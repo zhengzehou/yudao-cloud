@@ -1,42 +1,28 @@
 package cn.iocoder.yudao.module.im.controller.admin.userfriends.vo;
 
+import cn.idev.excel.annotation.ExcelIgnoreUnannotated;
+import cn.idev.excel.annotation.ExcelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
-import cn.idev.excel.annotation.*;
 
 @Schema(description = "管理后台 - 我的好友 Response VO")
 @Data
 @ExcelIgnoreUnannotated
-public class UserFriendsRespVO {
+public class UserFriendsApplyRespVO {
 
     @Schema(description = "ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "25907")
     @ExcelProperty("ID")
     private Long id;
 
-    @Schema(description = "账号编码", requiredMode = Schema.RequiredMode.REQUIRED)
-    @ExcelProperty("账号编码")
+    @Schema(description = "账号", example = "张三")
+    @ExcelProperty("账号")
     private String username;
-
-//    @Schema(description = "密码")
-//    @ExcelProperty("密码")
-//    private String pwd;
-
-    @Schema(description = "名称", example = "李四")
-    @ExcelProperty("名称")
-    private String name;
-
     @Schema(description = "昵称", example = "张三")
     @ExcelProperty("昵称")
     private String nickName;
-
-    @Schema(description = "首字母")
-    @ExcelProperty("首字母")
-    private String firstChar;
 
     @Schema(description = "头像")
     @ExcelProperty("头像")
@@ -44,7 +30,7 @@ public class UserFriendsRespVO {
 
     @Schema(description = "性别 （0保密、1男、2女）")
     @ExcelProperty("性别 （0保密、1男、2女）")
-    private Integer sex;
+    private Integer gender;
 
     @Schema(description = "年龄")
     @ExcelProperty("年龄")
@@ -56,7 +42,7 @@ public class UserFriendsRespVO {
 
     @Schema(description = "个性签名")
     @ExcelProperty("个性签名")
-    private String sign;
+    private String slogan;
 
     @Schema(description = "地区")
     @ExcelProperty("地区")
@@ -70,24 +56,20 @@ public class UserFriendsRespVO {
     @ExcelProperty("好友账号ID")
     private Long friendId;
 
-    @Schema(description = "好友来源（0主动添加，1对方申请，2朋友推荐）")
-    @ExcelProperty("好友来源（0主动添加，1对方申请，2朋友推荐）")
-    private Integer friendSource;
-
-    @Schema(description = "推荐人ID", example = "10459")
-    @ExcelProperty("推荐人ID")
-    private Long recUserId;
-
     @Schema(description = "添加时的备注")
     @ExcelProperty("添加时的备注")
-    private String memo;
+    private String msg;
 
-    @Schema(description = "当前状态（0通过、1待通过、2拒绝、4删除、7拉黑、3临时禁用）")
-    @ExcelProperty("当前状态（0通过、1待通过、2拒绝、4删除、7拉黑、3临时禁用）")
+    @Schema(description = "留言回复")
+    @ExcelProperty("留言回复")
+    private String ansMemo;
+
+    @Schema(description = "当前状态（0通过、1待通过、2拒绝）")
+    @ExcelProperty("当前状态（0通过、1待通过、2拒绝、）")
     private Integer status;
 
-    @Schema(description = "发送时间", requiredMode = Schema.RequiredMode.REQUIRED)
-    @ExcelProperty("发送时间")
+    @Schema(description = "申请时间", requiredMode = Schema.RequiredMode.REQUIRED)
+    @ExcelProperty("申请时间")
     private LocalDateTime createTime;
 
     private Boolean isLast;

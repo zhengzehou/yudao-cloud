@@ -3,6 +3,8 @@ package cn.iocoder.yudao.framework.websocket.core.handler;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.TypeUtil;
 import cn.iocoder.yudao.framework.common.util.json.JsonUtils;
+import cn.iocoder.yudao.framework.security.core.LoginUser;
+import cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.yudao.framework.tenant.core.util.TenantUtils;
 import cn.iocoder.yudao.framework.websocket.core.listener.WebSocketMessageListener;
 import cn.iocoder.yudao.framework.websocket.core.message.JsonWebSocketMessage;
@@ -52,22 +54,30 @@ public class JsonWebSocketMessageHandler extends TextWebSocketHandler {
             session.sendMessage(new TextMessage("pong"));
             return;
         }
-
         // 2.1 解析消息
         try {
             JsonWebSocketMessage jsonMessage = JsonUtils.parseObject(message.getPayload(), JsonWebSocketMessage.class);
             if (jsonMessage == null) {
                 log.error("[handleTextMessage][session({}) message({}) 解析为空]", session.getId(), message.getPayload());
+                session.sendMessage(new TextMessage("消息为空"));
                 return;
             }
             if (StrUtil.isEmpty(jsonMessage.getType())) {
                 log.error("[handleTextMessage][session({}) message({}) 类型为空]", session.getId(), message.getPayload());
+                session.sendMessage(new TextMessage("类型为空"));
                 return;
             }
             // 2.2 获得对应的 WebSocketMessageListener
             WebSocketMessageListener<Object> messageListener = listeners.get(jsonMessage.getType());
             if (messageListener == null) {
                 log.error("[handleTextMessage][session({}) message({}) 监听器为空]", session.getId(), message.getPayload());
+                session.sendMessage(new TextMessage("没有对应类型的处理器"));
+                return;
+            }
+            LoginUser loginUser = WebSocketFrameworkUtils.getLoginUser(session);
+            if(loginUser == null){
+                log.error("[handleTextMessage][session({}) message({}) 用户未登录]", session.getId(), message.getPayload());
+                session.sendMessage(new TextMessage("用户未登录"));
                 return;
             }
             // 2.3 处理消息
@@ -77,6 +87,7 @@ public class JsonWebSocketMessageHandler extends TextWebSocketHandler {
             TenantUtils.execute(tenantId, () -> messageListener.onMessage(session, messageObj));
         } catch (Throwable ex) {
             log.error("[handleTextMessage][session({}) message({}) 处理异常]", session.getId(), message.getPayload());
+            session.sendMessage(new TextMessage("处理异常："+ex.getMessage()));
         }
     }
 

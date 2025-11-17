@@ -2504,6 +2504,7 @@ CREATE TABLE `system_oauth2_client`  (
   `status` tinyint NOT NULL COMMENT '状态',
   `access_token_validity_seconds` int NOT NULL COMMENT '访问令牌的有效期',
   `refresh_token_validity_seconds` int NOT NULL COMMENT '刷新令牌的有效期',
+  app_token_expire_days int  NOT NULL default 3 COMMENT '刷新令牌的有效期',
   `redirect_uris` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '可重定向的 URI 地址',
   `authorized_grant_types` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '授权类型',
   `scopes` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '授权范围',

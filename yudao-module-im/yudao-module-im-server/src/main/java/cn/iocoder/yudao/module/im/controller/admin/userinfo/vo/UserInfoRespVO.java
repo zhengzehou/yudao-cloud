@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.im.controller.admin.userinfo.vo;
 
+import cn.iocoder.yudao.module.im.utils.BirthdayUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -58,9 +59,9 @@ public class UserInfoRespVO {
     @ExcelProperty("个性签名")
     private String sign;
 
-    @Schema(description = "手机号", requiredMode = Schema.RequiredMode.REQUIRED)
-    @ExcelProperty("手机号")
-    private String phone;
+//    @Schema(description = "手机号", requiredMode = Schema.RequiredMode.REQUIRED)
+//    @ExcelProperty("手机号")
+//    private String phone;
 
     @Schema(description = "邮箱", requiredMode = Schema.RequiredMode.REQUIRED)
     @ExcelProperty("邮箱")
@@ -86,4 +87,22 @@ public class UserInfoRespVO {
     @ExcelProperty("发送时间")
     private LocalDateTime createTime;
 
+    /**
+     * 最后登录IP
+     */
+    private String lastLoginIp;
+
+    /**
+     * 最后登录时间
+     */
+    private LocalDateTime lastLoginTime;
+
+    /**
+     * 距离生日天数
+     */
+    private Long day;
+
+    public Long getDay() {
+        return BirthdayUtils.getDaysUntilNextBirthday(birthday);
+    }
 }

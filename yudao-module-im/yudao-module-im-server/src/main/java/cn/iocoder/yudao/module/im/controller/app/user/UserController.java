@@ -56,32 +56,30 @@ public class UserController {
         return success(true);
     }
 
-    @DeleteMapping("/delete")
-    @Operation(summary = "删除用户信息")
-    @Parameter(name = "id", description = "编号", required = true)
-    @PreAuthorize("@ss.hasPermission('im:user-info:delete')")
-    public CommonResult<Boolean> deleteUserInfo(@RequestParam("id") Long id) {
-        userInfoService.deleteUserInfo(id);
-        return success(true);
-    }
-
-    @DeleteMapping("/delete-list")
-    @Parameter(name = "ids", description = "编号", required = true)
-    @Operation(summary = "批量删除用户信息")
-                @PreAuthorize("@ss.hasPermission('im:user-info:delete')")
-    public CommonResult<Boolean> deleteUserInfoList(@RequestParam("ids") List<Long> ids) {
-        userInfoService.deleteUserInfoListByIds(ids);
-        return success(true);
-    }
+//    @DeleteMapping("/delete")
+//    @Operation(summary = "删除用户信息")
+//    @Parameter(name = "id", description = "编号", required = true)
+//    @PreAuthorize("@ss.hasPermission('im:user-info:delete')")
+//    public CommonResult<Boolean> deleteUserInfo(@RequestParam("id") Long id) {
+//        userInfoService.deleteUserInfo(id);
+//        return success(true);
+//    }
+//
+//    @DeleteMapping("/delete-list")
+//    @Parameter(name = "ids", description = "编号", required = true)
+//    public CommonResult<Boolean> deleteUserInfoList(@RequestParam("ids") List<Long> ids) {
+//        userInfoService.deleteUserInfoListByIds(ids);
+//        return success(true);
+//    }
 
     @GetMapping("/get")
     @Operation(summary = "获得用户信息")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    @PreAuthorize("@ss.hasPermission('im:user-info:query')")
     public CommonResult<UserInfoRespVO> getUserInfo(@RequestParam("id") Long id) {
         UserInfoDO userInfo = userInfoService.getUserInfo(id);
         return success(BeanUtils.toBean(userInfo, UserInfoRespVO.class));
     }
+
 
     @GetMapping("/info")
     @Operation(summary = "获得当前登录用户信息")
@@ -105,6 +103,14 @@ public class UserController {
     @Operation(summary = "获得用户信息分页")
     @PreAuthorize("@ss.hasPermission('im:user-info:query')")
     public CommonResult<PageResult<UserInfoRespVO>> getUserInfoPage(@Valid UserInfoPageReqVO pageReqVO) {
+        PageResult<UserInfoDO> pageResult = userInfoService.getUserInfoPage(pageReqVO);
+        return success(BeanUtils.toBean(pageResult, UserInfoRespVO.class));
+    }
+
+    @GetMapping("/new-friend/page")
+    @Operation(summary = "申请加好友的列表-新朋友")
+    @PreAuthorize("@ss.hasPermission('im:user-info:query')")
+    public CommonResult<PageResult<UserInfoRespVO>> getUserNewFriendsPage(@Valid UserInfoPageReqVO pageReqVO) {
         PageResult<UserInfoDO> pageResult = userInfoService.getUserInfoPage(pageReqVO);
         return success(BeanUtils.toBean(pageResult, UserInfoRespVO.class));
     }

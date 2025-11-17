@@ -1,6 +1,11 @@
 package cn.iocoder.yudao.module.im.service.userfriends;
 
 import java.util.*;
+
+import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.UserInfoPageReqVO;
+import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.UserInfoRespVO;
+import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.UserSearchPageReqVO;
+import cn.iocoder.yudao.module.im.dal.dataobject.userfriends.UserFriendsApplyDO;
 import jakarta.validation.*;
 import cn.iocoder.yudao.module.im.controller.admin.userfriends.vo.*;
 import cn.iocoder.yudao.module.im.dal.dataobject.userfriends.UserFriendsDO;
@@ -21,7 +26,8 @@ public interface UserFriendsService {
      * @return 编号
      */
     Long createUserFriends(@Valid UserFriendsSaveReqVO createReqVO);
-
+    Long createUserFriendsApply(Long userId, Long targetUserId,String msg);
+    Integer handleUserFriendsApply(UserFriendsApplyDO applyDO,Integer status);
     /**
      * 更新我的好友
      *
@@ -57,6 +63,9 @@ public interface UserFriendsService {
      * @param pageReqVO 分页查询
      * @return 我的好友分页
      */
-    PageResult<UserFriendsDO> getUserFriendsPage(UserFriendsPageReqVO pageReqVO);
+    PageResult<UserInfoRespVO> searchUserFriendsPage(UserSearchPageReqVO pageReqVO);
+    PageResult<UserFriendsRespVO> getUserFriendsPage(UserInfoPageReqVO pageReqVO);
+    PageResult<UserFriendsApplyRespVO> getUserFriendsApplyPage(UserFriendsPageReqVO pageReqVO);
+    UserFriendsApplyDO getApplyInfo(Long id);
 
 }

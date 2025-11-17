@@ -5,6 +5,8 @@ import cn.iocoder.yudao.module.im.controller.app.chat.vo.ContactVO;
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.RoomGroupVO;
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.RoomReadInfo;
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.RoomUnreadCount;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -85,21 +87,26 @@ public class RoomGroupServiceImpl implements RoomGroupService {
 
     @Override
     public PageResult<ContactVO> getContactPage(RoomGroupPageReqVO pageReqVO) {
-        PageResult<ContactVO> page = roomGroupMapper.selectContactPage(pageReqVO);
+        IPage<ContactVO> pageParam = Page.of(pageReqVO.getPageNo(), pageReqVO.getPageSize());
+        IPage<ContactVO> pageData = roomGroupMapper.selectContactPage(pageParam,pageReqVO.getCreateUserId());
         // 加载会话的未读消息数
         List<RoomReadInfo> roomReadInfos = new ArrayList<>();
-        page.getList().forEach(contactVO -> roomReadInfos.add(new RoomReadInfo(contactVO.getRoomId(), contactVO.getLastMsgId())));
-        Map<Long,Integer> roomUnreadCounts = getUnreadMsgCount(roomReadInfos);
-        page.getList().forEach(contactVO -> roomUnreadCounts.get(contactVO.getRoomId()));
-        return page;
+        pageData.getRecords().forEach(contactVO -> roomReadInfos.add(new RoomReadInfo(contactVO.getRoomId(), contactVO.getLastMsgId())));
+        Map<Long, Integer> roomUnreadCounts = getUnreadMsgCount(roomReadInfos);
+        pageData.getRecords().forEach(contactVO -> roomUnreadCounts.get(contactVO.getRoomId()));
+        return new PageResult<>(pageData.getRecords(), pageData.getTotal());
     }
     @Override
     public PageResult<RoomGroupVO> getContactGroupPage(RoomGroupPageReqVO pageReqVO) {
-        PageResult<RoomGroupVO> page = roomGroupMapper.selectContactGroupPage(pageReqVO);
-        return page;
+        IPage<RoomGroupVO> pageParam = Page.of(pageReqVO.getPageNo(), pageReqVO.getPageSize());
+        IPage<RoomGroupVO> pageData = roomGroupMapper.selectContactGroupPage(pageParam,pageReqVO.getCreateUserId());
+        return new PageResult<>(pageData.getRecords(), pageData.getTotal());
     }
 
     public Map<Long,Integer> getUnreadMsgCount(List<RoomReadInfo> roomReadInfos) {
+        if (roomReadInfos.isEmpty()) {
+            return Collections.emptyMap();
+        }
 //        List<RoomReadInfo> roomReadInfos
         List<RoomUnreadCount> roomUnreadCounts = roomGroupMapper.selectUnreadMsgCountBatch(roomReadInfos);
         // 加载会话的未读消息数

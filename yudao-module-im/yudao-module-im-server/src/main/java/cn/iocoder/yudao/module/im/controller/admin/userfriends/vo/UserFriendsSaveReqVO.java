@@ -20,7 +20,7 @@ public class UserFriendsSaveReqVO {
     @NotNull(message = "好友账号ID不能为空")
     private Long friendId;
 
-    @Schema(description = "好友来源（0主动添加，1对方申请，2朋友推荐）", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "好友来源（0主动添加，1对方申请，2朋友推荐）")
     @NotNull(message = "好友来源（0主动添加，1对方申请，2朋友推荐）不能为空")
     private Integer friendSource;
 

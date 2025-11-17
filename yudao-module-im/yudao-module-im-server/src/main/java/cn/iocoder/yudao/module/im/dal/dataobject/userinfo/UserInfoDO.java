@@ -1,12 +1,10 @@
 package cn.iocoder.yudao.module.im.dal.dataobject.userinfo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.*;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.*;
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
 
@@ -57,7 +55,7 @@ public class UserInfoDO extends BaseDO {
     /**
      * 性别 （0保密、1男、2女）
      */
-    private Integer sex;
+    private Integer gender;
     /**
      * 年龄
      */
@@ -69,7 +67,7 @@ public class UserInfoDO extends BaseDO {
     /**
      * 个性签名
      */
-    private String sign;
+    private String slogan;
     /**
      * 手机号
      */

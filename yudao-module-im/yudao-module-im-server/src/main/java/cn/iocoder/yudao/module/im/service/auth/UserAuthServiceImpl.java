@@ -1,6 +1,7 @@
 package cn.iocoder.yudao.module.im.service.auth;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.OAuth2TokenCommonApi;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.dto.OAuth2AccessTokenCreateReqDTO;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.dto.OAuth2AccessTokenRespDTO;
@@ -8,6 +9,7 @@ import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.enums.UserTypeEnum;
 import cn.iocoder.yudao.framework.common.util.monitor.TracerUtils;
 import cn.iocoder.yudao.framework.common.util.servlet.ServletUtils;
+import cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.UserInfoSaveReqVO;
 import cn.iocoder.yudao.module.im.controller.app.auth.vo.*;
 import cn.iocoder.yudao.module.im.convert.auth.AuthConvert;
@@ -34,6 +36,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 import static cn.iocoder.yudao.framework.common.util.servlet.ServletUtils.getClientIP;
 import static cn.iocoder.yudao.framework.web.core.util.WebFrameworkUtils.getTerminal;
 import static cn.iocoder.yudao.module.im.api.enums.ErrorCodeConstants.*;
@@ -174,8 +177,8 @@ public class UserAuthServiceImpl implements UserAuthService {
         createLoginLog(user.getId(), mobile, logType, LoginResultEnum.SUCCESS);
         // 创建 Token 令牌
         OAuth2AccessTokenRespDTO accessTokenRespDTO = oauth2TokenApi.createAccessToken(new OAuth2AccessTokenCreateReqDTO()
-                .setUserId(user.getId()).setUserType(getUserType().getValue())
-                .setClientId(OAuth2ClientConstants.CLIENT_ID_DEFAULT)).getCheckedData();
+                .setUserId(user.getId()).setUserType(getUserType().getValue()).setTerm(getTerminal())
+                .setClientId(OAuth2ClientConstants.CLIENT_ID_IM)).getCheckedData();
         // 构建返回结果
         return AuthConvert.INSTANCE.convert(accessTokenRespDTO, openid);
     }
@@ -277,6 +280,16 @@ public class UserAuthServiceImpl implements UserAuthService {
     public void logout(String token) {
         // 删除访问令牌
         OAuth2AccessTokenRespDTO accessTokenRespDTO = oauth2TokenApi.removeAccessToken(token).getCheckedData();
+        if (accessTokenRespDTO == null) {
+            return;
+        }
+        // 删除成功，则记录登出日志
+        createLogoutLog(accessTokenRespDTO.getUserId());
+    }
+    @Override
+    public void logoutAll(String token) {
+        // 删除访问令牌
+        OAuth2AccessTokenRespDTO accessTokenRespDTO = oauth2TokenApi.removeAllAccessToken(token).getCheckedData();
         if (accessTokenRespDTO == null) {
             return;
         }

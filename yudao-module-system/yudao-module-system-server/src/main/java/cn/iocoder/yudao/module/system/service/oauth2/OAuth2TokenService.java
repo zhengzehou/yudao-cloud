@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.system.service.oauth2;
 
+import cn.iocoder.yudao.framework.common.enums.TerminalEnum;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.module.system.controller.admin.oauth2.vo.token.OAuth2AccessTokenPageReqVO;
 import cn.iocoder.yudao.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
@@ -28,6 +29,8 @@ public interface OAuth2TokenService {
      * @return 访问令牌的信息
      */
     OAuth2AccessTokenDO createAccessToken(Long userId, Integer userType, String clientId, List<String> scopes);
+
+    OAuth2AccessTokenDO createAccessToken(Long userId, Integer userType, String clientId, List<String> scopes, Integer term);
 
     /**
      * 刷新访问令牌
@@ -68,6 +71,7 @@ public interface OAuth2TokenService {
      * @return 访问令牌的信息
      */
     OAuth2AccessTokenDO removeAccessToken(String accessToken);
+    OAuth2AccessTokenDO removeAllAccessToken(String accessToken);
 
     /**
      * 获得访问令牌分页

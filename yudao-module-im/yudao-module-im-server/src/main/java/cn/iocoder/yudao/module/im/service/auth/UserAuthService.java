@@ -26,6 +26,7 @@ public interface UserAuthService {
      * @param token token
      */
     void logout(String token);
+    void logoutAll(String token);
 
     /**
      * 手机 + 验证码登陆

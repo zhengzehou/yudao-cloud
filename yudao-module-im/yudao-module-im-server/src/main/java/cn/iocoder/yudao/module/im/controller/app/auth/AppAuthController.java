@@ -6,6 +6,7 @@ import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.yudao.framework.security.config.SecurityProperties;
 import cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils;
+import cn.iocoder.yudao.framework.web.core.util.WebFrameworkUtils;
 import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.UserInfoSaveReqVO;
 import cn.iocoder.yudao.module.im.controller.app.auth.vo.*;
 import cn.iocoder.yudao.module.im.convert.auth.AuthConvert;
@@ -26,6 +27,9 @@ import jakarta.annotation.Resource;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
+import java.time.ZoneId;
+import java.util.Objects;
 
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.error;
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
@@ -71,6 +75,17 @@ public class AppAuthController {
                 securityProperties.getTokenHeader(), securityProperties.getTokenParameter());
         if (StrUtil.isNotBlank(token)) {
             authService.logout(token);
+        }
+        return success(true);
+    }
+    @PostMapping("/logout/all")
+    @Operation(summary = "登出所有设备的系统")
+    @PermitAll
+    public CommonResult<Boolean> logoutAll(HttpServletRequest request) {
+        String token = SecurityFrameworkUtils.obtainAuthorization(request,
+                securityProperties.getTokenHeader(), securityProperties.getTokenParameter());
+        if (StrUtil.isNotBlank(token)) {
+            authService.logoutAll(token);
         }
         return success(true);
     }

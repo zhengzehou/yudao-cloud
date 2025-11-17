@@ -11,6 +11,9 @@ import cn.iocoder.yudao.module.im.controller.admin.userinfo.vo.UserInfoSaveReqVO
 import cn.iocoder.yudao.module.im.controller.app.chat.vo.UserVO;
 import cn.iocoder.yudao.module.im.dal.dataobject.userinfo.UserInfoDO;
 import cn.iocoder.yudao.module.im.dal.mysql.userinfo.UserInfoMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -139,6 +142,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public List<UserInfoDO> getUserInfo(List<Long> ids) {
+        QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id", ids);
+        return userInfoMapper.selectList(queryWrapper);
+    }
+
+    @Override
     public UserInfoDO getUserByMobile(String mobile) {
         return userInfoMapper.selectByMobile(mobile);
     }
@@ -166,7 +176,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public PageResult<UserVO> selectFriendsPage(UserInfoPageReqVO pageReqVO) {
-        return userInfoMapper.selectFriendsPage(pageReqVO);
+        IPage<UserVO> pageParam = Page.of(pageReqVO.getPageNo(), pageReqVO.getPageSize());
+        pageParam = userInfoMapper.selectFriendsPage(pageParam,pageReqVO.getId());
+        return new PageResult<>(pageParam.getRecords(), pageParam.getTotal());
     }
 
 }
